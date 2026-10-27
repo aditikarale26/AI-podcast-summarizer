@@ -1,0 +1,4 @@
+Samples: 30
+rouge1: 0.3540
+rouge2: 0.1560
+rougeL: 0.2511
