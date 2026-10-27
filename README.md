@@ -52,12 +52,9 @@ winget install "FFmpeg (Essentials Build)"
 
 ## Usage
 
-Run the steps in order:
-
 ```bash
-python download.py      # paste a YouTube URL when prompted
-python transcribe.py    # creates audio/transcript.txt
-python summarizer.py    # creates audio/summary.txt
+python main.py          # paste a YouTube URL, get the summary
+python evaluate_rouge.py   # ROUGE evaluation on 30 CNN/DailyMail samples
 ```
 
 ## Model comparison
@@ -73,5 +70,21 @@ python summarizer.py    # creates audio/summary.txt
 - [x] Transcription
 - [x] Chunking
 - [x] Map-reduce summarization
-- [ ] ROUGE evaluation on CNN/DailyMail
-- [ ] Single-command pipeline script
+- [x] ROUGE evaluation on CNN/DailyMail
+- [x] Single-command pipeline (`main.py`)
+
+## Results
+
+ROUGE scores on 30 CNN/DailyMail test samples (summarization module only):
+
+| Metric | Score |
+|---|---|
+| ROUGE-1 | 0.3540 |
+| ROUGE-2 | 0.1560 |
+| ROUGE-L | 0.2511 |
+
+## Known limitations
+
+- Whisper `small` can misspell proper nouns (e.g. "Alvin" transcribed as "elven"), and the summary inherits those errors.
+- Abstractive summarization can occasionally invent or distort details that aren't in the transcript.
+- Transcription runs on CPU and is slow for long videos (about 11 minutes for a 17-minute talk).
