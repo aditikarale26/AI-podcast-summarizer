@@ -7,17 +7,27 @@ from nltk.tokenize import sent_tokenize
 def chunk_transcript(transcript, max_words=800):
     sentences = sent_tokenize(transcript)
 
+    # Split any oversized "sentence" (e.g. missing punctuation) into word-based pieces
+    pieces = []
+    for s in sentences:
+        words = s.split()
+        if len(words) > max_words:
+            for i in range(0, len(words), max_words):
+                pieces.append(" ".join(words[i:i + max_words]))
+        else:
+            pieces.append(s)
+
     chunks = []
     current_chunk = []
     current_word_count = 0
 
-    for sentence in sentences:
-        word_count = len(sentence.split())
+    for piece in pieces:
+        word_count = len(piece.split())
         if current_word_count + word_count > max_words and current_chunk:
             chunks.append(" ".join(current_chunk))
             current_chunk = []
             current_word_count = 0
-        current_chunk.append(sentence)
+        current_chunk.append(piece)
         current_word_count += word_count
 
     if current_chunk:
